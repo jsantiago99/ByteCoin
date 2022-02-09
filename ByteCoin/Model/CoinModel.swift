@@ -10,5 +10,7 @@ import Foundation
 
 struct CoinModel {
     let assetId : String = "BTC"
-    let rate : Double?
+    let assetIdQuote : String?
+    let rate : String?
+    
 }

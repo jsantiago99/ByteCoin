@@ -10,7 +10,7 @@ import Foundation
 
 protocol CoinManagerDelegate {
     func didFailWithError(error: Error)
-    func didUpdateCoin(_ delegate: CoinManager, coin: CoinModel )
+    func didUpdateCoin(_ coinManager: CoinManager, coin: CoinModel )
 }
 
 struct CoinManager {
@@ -20,6 +20,11 @@ struct CoinManager {
     
     let currencyArray = ["AUD", "BRL","CAD","CNY","EUR","GBP","HKD","IDR","ILS","INR","JPY","MXN","NOK","NZD","PLN","RON","RUB","SEK","SGD","USD","ZAR"]
 
+    func fetchCoinPrice(selection: String) {
+        let urlString = "\(baseURL)/\(selection)?apikey=\(apiKey)"
+        
+        performRequest(with: urlString)
+    }
     
     var delegate : CoinManagerDelegate?
     
@@ -50,11 +55,12 @@ struct CoinManager {
         let decoder = JSONDecoder()
         do {
             let decodedData = try decoder.decode(CoinData.self, from: data)
-            let lastPrice = decodedData.rate
-            print(lastPrice)
+            let lastPrice = String(format: "%.2f", decodedData.rate)
+            let idQuote = decodedData.asset_id_quote
+
             
     
-            let coin = CoinModel(rate: lastPrice)
+            let coin = CoinModel(assetIdQuote: idQuote, rate: lastPrice)
             
             return coin
         

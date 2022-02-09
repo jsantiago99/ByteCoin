@@ -38,7 +38,8 @@ class ViewController: UIViewController , UIPickerViewDataSource, UIPickerViewDel
     }
     
     func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
-        print(coinManager.currencyArray[row])
+        coinManager.fetchCoinPrice(selection: coinManager.currencyArray[row])
+        
     }
 
 
@@ -46,11 +47,15 @@ class ViewController: UIViewController , UIPickerViewDataSource, UIPickerViewDel
 
 extension ViewController : CoinManagerDelegate {
     func didFailWithError(error: Error) {
-        <#code#>
+        print(error)
     }
     
-    func didUpdateCoin(_ delegate: CoinManager, coin: CoinModel) {
-        <#code#>
+    func didUpdateCoin(_ coinManager: CoinManager, coin: CoinModel) {
+        DispatchQueue.main.async {
+            self.currencyLabel.text = coin.assetIdQuote
+            self.bitcoinLabel.text = coin.rate
+            
+        }
     }
 }
 
