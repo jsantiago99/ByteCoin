@@ -26,8 +26,10 @@ struct CoinManager {
         performRequest(with: urlString)
     }
     
+    //creates delegate variable
     var delegate : CoinManagerDelegate?
     
+    //perform API call
     func performRequest(with urlString: String) {
         //Make URL, create session, create the task, then start task
         
@@ -46,22 +48,24 @@ struct CoinManager {
                     }
                 }
             }
-            task.resume()
+            task.resume() //starts task
         }
             
     }
     
+    //want to return coin model
+    //Note: We want optional coinmodel so that if there is an error we can return nil
     func parseJSON(_ data: Data) -> CoinModel? {
-        let decoder = JSONDecoder()
+        let decoder = JSONDecoder() //decodes
         do {
             let decodedData = try decoder.decode(CoinData.self, from: data)
-            let lastPrice = String(format: "%.2f", decodedData.rate)
-            let idQuote = decodedData.asset_id_quote
+            let lastPrice = String(format: "%.2f", decodedData.rate) //formats rate so that we dont have long trailing numbers in the UI
+            let idQuote = decodedData.asset_id_quote //assssed from the coindata pulled form api
 
-            
-    
+            // initialize variables in coin model to be accessed
             let coin = CoinModel(assetIdQuote: idQuote, rate: lastPrice)
             
+        
             return coin
         
         } catch {
