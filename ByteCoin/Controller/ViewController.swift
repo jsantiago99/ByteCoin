@@ -9,11 +9,12 @@
 import UIKit
 
 class ViewController: UIViewController , UIPickerViewDataSource, UIPickerViewDelegate {
+
     func numberOfComponents(in pickerView: UIPickerView) -> Int {
         return 1
     }
     
-    let coinManager = CoinManager()
+    var coinManager = CoinManager()
     
     func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
         return coinManager.currencyArray.count
@@ -29,6 +30,7 @@ class ViewController: UIViewController , UIPickerViewDataSource, UIPickerViewDel
         super.viewDidLoad()
         currencyPicker.dataSource = self
         currencyPicker.delegate = self
+        coinManager.delegate = self
     }
     
     func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
@@ -40,5 +42,15 @@ class ViewController: UIViewController , UIPickerViewDataSource, UIPickerViewDel
     }
 
 
+}
+
+extension ViewController : CoinManagerDelegate {
+    func didFailWithError(error: Error) {
+        <#code#>
+    }
+    
+    func didUpdateCoin(_ delegate: CoinManager, coin: CoinModel) {
+        <#code#>
+    }
 }
 
